@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  train:
+    build:
+      context: .
+      dockerfile: src/train/Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+    container_name: train_service
+
+  inference:
+    build:
+      context: .
+      dockerfile: src/inference/Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+    container_name: inference_service

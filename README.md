@@ -4,7 +4,7 @@
 
 ## EDA with conclusions
 
-We can see that there are two columns, reviews and sentiment, which is the target column. There are 40000 rows in this dataset while there are no NULL values. We can also see that the training dataset is balanced because half of the dataset has a target value of 'positive', while the other half of the dataset has a target value of 'negative'. From the review analysis, we can conclude that the reviews are quite long, while the average word length is about 5. This may mean that there are a large number of 'stopwords' that are not of great importance to us.
+We can see that there are two columns, reviews and sentiment, which is the target column. There are 40000 rows in this dataset while there are no NULL values. We can also see that the training dataset is balanced because half of the dataset has a target value of 'positive', while the other half of the dataset has a target value of 'negative'.
 
 ## Description of feature engineering 
 
@@ -60,24 +60,24 @@ Disadvantages of SVM for Sentiment Analysis:
 
 ## Overall performance evaluation
 
-I used 3 different models for this project: Naive Bayes, Support Vector Machine and Logistic Regression. I also tested two vectorizers: CountVectorizer and TFIDF vectorizer, and I noticed that TFIDF vectorizer gives slightly better results The following table shows the accuracy : 
+I used 3 different models for this project: Random Forest, Support Vector Machine and Logistic Regression. I also tested two vectorizers: CountVectorizer and TFIDF vectorizer, and I noticed that TFIDF vectorizer gives slightly better results The following table shows the accuracy : 
 
 Results with Count vectorizer
 
-|              | Naive Bayes | SVM  | Logistic Regression |
-|--------------|-------------|------|---------------------|
-| Lemmatization|    88.125   | 89.1 |        89.5         |
-| Stemming     |   87.7625   | 89.0 |        89.3         |
+|              | Random Forest | SVM  | Logistic Regression |
+|--------------|---------------|------|---------------------|
+| Lemmatization| 85.0          | 87.0 | 88.1                |
+| Stemming     | 84.4          | 87.1 | 88.0                |
 
 Results with TF-IDF vectorizer 
 
-|              | Naive Bayes |   SVM    | Logistic Regression |
-|--------------|-------------|----------|---------------------|
-| Lemmatization|    88.45    |  90.425  |       88.7125       |
-| Stemming     |   88.3625   | 90.3875 |       88.6875       |
+|              | Random Forest | SVM  | Logistic Regression |
+|--------------|---------------|------|---------------------|
+| Lemmatization| 84.8          | 89.5 | 88.9                |
+| Stemming     | 84.1          | 89.3 | 88.8                |
 
 I chose the SVM model on which I applied lemmatization in preprocessing, and for vectorization I used the TFIDF vectorizer, because that model gave the best accuracy. 
-Accuracy on the inference dataset is 91%. 
+Accuracy on the inference dataset is 90%. 
 
 ## Potential business applications and value for business
 
@@ -92,38 +92,38 @@ Accuracy on the inference dataset is 91%.
 
 # ML Part
 
-## How to run
+## How to run?
 
-It is necessary that the docker daemon is running. This can be achieved by running a docker desktop application. Then it is necessary to open the command prompt and enter the following command to create the volume:
+1. Clone the repository:
+```
+git clone https://github.com/Andrej132/EPAM_Final_Project.git
+```
+2. Navigate to the project directory:
+```
+cd EPAM_Final_Project
+```
+3. Build the Docker image:
+```
+docker-compose build
+```
+4. Run the training service:
+```
+docker-compose up train
+```
+5. Run the inference service:
+```
+docker-compose up inference
+```
+6. Check the outputs:
 
-`docker volume create final_vol`
+    ● Processed datasets will be in the data/processed folder.
 
-Then the next command in the same command prompt:
+    ● The trained model and vectorizer will be in the outputs/model folder.
 
-`docker run -v final_vol:/vol_data  -it --name temp-container --rm busybox`
+    ● Predictions will be saved in the outputs/predictions/predictions.csv file.
 
-After that we need folders in our volume. It is necessary to open a new command prompt window and position yourself in the Final_Project folder. Next commands are: 
 
-`docker cp data temp-container:/vol_data`
-
-and
-
-`docker cp outputs temp-container:/vol_data`
-
-Then it is necessary to position in the src/train file to create the docker image:
-
-`docker build -t train .`
-
-Now let's run training
-
-`docker run -v final_vol:/app/vol train`
-
-If it's completed, we can position in src/inference file to create the docker image for inference:
-
-`docker build -t inference .`
-
-Run the inference:
-
-`docker run -v final_vol:/app/vol inference`
-
-That's everything!
+7. To stop all running containers:
+```
+docker-compose down
+```

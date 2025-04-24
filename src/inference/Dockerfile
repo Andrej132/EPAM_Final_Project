@@ -1,9 +1,16 @@
-FROM python:3.9
+FROM python:3.9-slim
 
 WORKDIR /app
 
-COPY . .
+COPY ../../src ./src
+COPY ../../data ./data
+COPY ../../outputs ./outputs
 
-RUN pip install -r requirements.txt
+COPY ../../requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python3", "inference.py"]
+RUN python -m nltk.downloader punkt wordnet stopwords punkt_tab
+
+ENV PYTHONPATH=/app
+
+CMD ["python", "src/inference/inference.py"]
